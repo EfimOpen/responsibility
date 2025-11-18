@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Передай ответственность!</title>
+<style>
+  body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a1c4fd);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    transition: background 0.5s ease;
+    text-align: center;
+  }
+  h1 {
+    font-size: 3em;
+    color: #fff;
+    text-shadow: 2px 2px 8px #000;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite alternate;
+  }
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+  }
+  button {
+    font-size: 1.5em;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 15px;
+    background: #ff6f91;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    margin: 10px;
+  }
+  button:hover {
+    transform: scale(1.15);
+    background: #ff4d6d;
+  }
+  #responsibility {
+    position: relative;
+    margin-top: 30px;
+    min-height: 200px;
+    width: 100%;
+    max-width: 100vw;
+  }
+  .task {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.5em;
+    animation: float 6s ease-in-out forwards; /* текст теперь медленно поднимается */
+    max-width: 90%;
+    word-wrap: break-word;
+  }
+  .task span {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    color: #fff;
+    text-shadow: 3px 3px 8px rgba(0,0,0,0.8);
+  }
+  .task img {
+    margin-top: 10px;
+    max-width: 80vw;
+    max-height: 200px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: jump 1s ease-in-out infinite alternate;
+  }
+  @keyframes float {
+    0% { transform: translateY(0); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(-300px); opacity: 0; }
+  }
+  @keyframes jump {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0); }
+  }
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: gold;
+    animation: fall linear infinite;
+    opacity: 0.8;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-10px) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+  }
+
+  @media (max-width: 768px) {
+    h1 { font-size: 2em; }
+    button { font-size: 1.2em; padding: 15px 30px; }
+    .task { font-size: 1.2em; }
+    .task img { max-width: 70vw; max-height: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Передай ответственность!</h1>
+<button onclick="giveResponsibility()">Щёлкни меня!</button>
+<div id="responsibility"></div>
+
+<script>
+const responsibilities = [
+  {text: "Ты должен смеяться каждый раз, когда видишь кота 🐱", gif: "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"},
+  {text: "Сегодня твоя задача — танцевать под любую песню 💃", gif: "https://media.giphy.com/media/26xBukhZQs1z3GHbS/giphy.gif"},
+  {text: "Отвечаешь за мемы друзей 😎", gif: "https://media.giphy.com/media/3o6ZsT6AdEOzVhIRDi/giphy.gif"},
+  {text: "Обнимай воображаемого единорога 🦄", gif: "https://media.giphy.com/media/l41lFw057lAJQMwg0/giphy.gif"},
+  {text: "Все жалобы на погоду — твоя ответственность 🌦️", gif: "https://media.giphy.com/media/3o7btNhMBytxAM6YBa/giphy.gif"},
+  {text: "Ты главный хранитель пиццы 🍕", gif: "https://media.giphy.com/media/3oKIPwoeGErMmaI43C/giphy.gif"},
+  {text: "Сделай смешное лицо прямо сейчас 😜", gif: "https://media.giphy.com/media/3oKIP9UdO1A2hT8U7K/giphy.gif"},
+  {text: "Сегодня ты должен разговаривать исключительно рифмами 🎤", gif: "https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/giphy.gif"},
+  {text: "Каждый раз, когда слышишь слово 'работа', притворяйся зомби 🧟", gif: "https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/giphy.gif"},
+  {text: "Побеседуй с любым предметом в комнате как с лучшим другом 🪑", gif: "https://media.giphy.com/media/l0HlQ7LRal4zM/giphy.gif"},
+  {text: "Попробуй съесть невидимую пиццу за 10 секунд 🍕👻", gif: "https://media.giphy.com/media/l4pTfx2qLszoacZRS/giphy.gif"},
+  {text: "Стань супергероем на 3 минуты и спаси комнату от воображаемой катастрофы 🦸‍♂️", gif: "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"},
+  {text: "Сделай йоговскую позу и замри на 5 секунд 🧘", gif: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"},
+  {text: "Каждое утро начинай с 'О-ля-ля' в разных интонациях 🎶", gif: "https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif"},
+  {text: "Представь себя котом и полежи на солнце 10 секунд 😺", gif: "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"},
+  {text: "Ты несешь ответственность за все смайлики в переписке друзей 😏", gif: "https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif"},
+  {text: "Каждый раз, когда слышишь 'да', подпрыгивай от радости 🎉", gif: "https://media.giphy.com/media/3orieY9nNeYz7/giphy.gif"},
+  {text: "Сделай 3 смешных селфи и покажи воображаемой публике 📸", gif: "https://media.giphy.com/media/3o7TKsQw6lcnC/giphy.gif"},
+  {text: "Сегодня твоя миссия — шептать тайны своим носкам 🧦", gif: "https://media.giphy.com/media/3o7TKsQw6lcnC/giphy.gif"},
+  {text: "Попробуй петь в ванной, представляя себя оперным певцом 🎵", gif: "https://media.giphy.com/media/xT9IgzoKnwFNmISR8I/giphy.gif"},
+  {text: "Все загадки — твоя личная ответственность! 🔮", gif: "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif"},
+  {text: "Ты теперь официальный шутник дня 🤡", gif: "https://media.giphy.com/media/l3vR85PnGsBwu1PFK/giphy.gif"},
+];
+
+const sounds = [
+  new Audio("https://www.soundjay.com/button/beep-07.wav"),
+  new Audio("https://www.soundjay.com/button/button-3.mp3"),
+  new Audio("https://www.soundjay.com/button/button-09.mp3"),
+  new Audio("https://www.soundjay.com/button/button-4.mp3")
+];
+
+function giveResponsibility() {
+  const random = responsibilities[Math.floor(Math.random() * responsibilities.length)];
+  
+  const respDiv = document.getElementById('responsibility');
+  const task = document.createElement('div');
+  task.className = 'task';
+  
+  const taskWidth = window.innerWidth * 0.9;
+  task.style.left = Math.random() * (window.innerWidth - taskWidth) + 'px';
+  
+  task.innerHTML = `<span>${random.text}</span><img src="${random.gif}" alt="gif">`;
+  
+  respDiv.appendChild(task);
+  
+  // проигрываем случайный звук
+  const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+  randomSound.currentTime = 0;
+  randomSound.play();
+  
+  createConfetti();
+  changeBackground();
+
+  setTimeout(() => task.remove(), 6000); // текст исчезает через 6 секунд
+}
+
+function createConfetti() {
+  for (let i = 0; i < 40; i++) {
+    const conf = document.createElement('div');
+    conf.className = 'confetti';
+    conf.style.left = Math.random() * window.innerWidth + 'px';
+    conf.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+    conf.style.animationDuration = 2 + Math.random()*3 + 's';
+    document.body.appendChild(conf);
+    setTimeout(() => conf.remove(), 4000);
+  }
+}
+
+function changeBackground() {
+  const colors = [
+    "linear-gradient(135deg, #ff9a9e, #fad0c4, #a1c4fd)",
+    "linear-gradient(135deg, #fbc2eb, #a6c1ee)",
+    "linear-gradient(135deg, #f6d365, #fda085)",
+    "linear-gradient(135deg, #84fab0, #8fd3f4)"
+  ];
+  document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
+}
+</script>
+
+</body>
+</html>
+
